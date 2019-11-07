@@ -1,0 +1,90 @@
+//- player-info.pug
+include ../partials/header.pug
+include ../partials/menu.pug
+
+div.container
+  br
+  div.row
+    div.col-4
+      div.card
+        - var image_src = '../../resources/img/helmet.jpg'
+        //- TODO: Modify the pug code below to conditionally set the image_src
+        - if(playerinfo)
+          for data in playerinfo
+            - image_src = '../' + data.img_src
+
+        img.card-img-top#player_img(src= image_src, alt="Football Player")
+        div.card-body.mx-auto
+          form.form(action="/player_info/post", method="get")
+            select.custom-select(name="player_choice", onchange="this.form.submit()")
+              - if(playerinfo)
+                for variable in playerinfo
+                  option(selected)=variable.name
+
+              - else
+                option(selected) Select Player
+              //- TODO: Populate the select with player options. Set the value to the player's id and display the player's name.
+              each variable in data
+                - if(playerinfo)
+                  for info in playerinfo
+                    if(info.name != variable.name)
+                      option(value=variable.id)=variable.name
+                - else
+                  option(value=variable.id)=variable.name
+
+    div.col-8
+      div.table-responsive
+        table.table
+          //- TODO: Set the player's information. On select, fill in the player's information in each of the field below. You will need to calculate the average rushing, receiving, and passing yards.
+          tr
+              th Year
+              - if(playerinfo)
+                for item in playerinfo
+                  td=item.year
+              - else
+                td ?
+          tr
+            th Major
+            - if(playerinfo)
+              for item in playerinfo
+                td=item.major
+            - else
+              td ?
+          tr
+              th Games Played
+              - if(playedgames)
+                for data in playedgames
+                  td=data.Played_Games
+              - else
+                td ?
+          tr
+          - if(playerinfo)
+            for item in playerinfo
+              td='Passing Yards: ' + item.passing_yards
+              for data in playedgames
+                td='Avg. Passing Yards: ' + Math.round(item.passing_yards/data.Played_Games)
+          - else
+            td Passing Yards:
+            td Avg. Passing Yards:
+
+          tr
+          - if(playerinfo)
+            for item in playerinfo
+              td='Rushing Yards: ' + item.rushing_yards
+              for data in playedgames
+                td='Avg. Rushing Yards: ' + Math.round(item.rushing_yards/data.Played_Games)
+          - else
+            td Rushing Yards:
+            td Avg. Rushing Yards:
+
+          tr
+          - if(playerinfo)
+            for item in playerinfo
+              td='Rushing Yards: ' + item.receiving_yards
+              for data in playedgames
+                td='Avg. Receiving Yards Yards: ' + Math.round(item.receiving_yards/data.Played_Games)
+          - else
+            td Receiving Yards Yards:
+            td Avg. Receiving Yards Yards:
+
+include ../partials/footer.pug

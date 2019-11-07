@@ -1,0 +1,46 @@
+//- team_stats.pug
+include ../partials/header.pug
+include ../partials/menu.pug
+
+div.container
+  br
+  div.jumbotron
+    h1.display-4 Fall 2018 Stats
+    p.lead CU Football Statistics for the 2018 Football Season!
+
+  table.table.table-bordered#stats_table
+    tr
+      th.align-bottom(rowspan="2") Game Date
+      th.align-bottom(rowspan="2") Opposing Team Name
+      th.text-center(colspan="2") Score
+      th.align-bottom(rowspan="2") Winner
+    tr
+      th Home Score
+      th Opp. Score
+        - if(all_info_result)
+            for item in all_info_result
+              tr
+                td= item.game_date
+                td= item.visitor_name
+                td= item.home_score
+                td= item.visitor_score
+                if(item.visitor_score > item.home_score)
+                  td=item.visitor_name
+                else
+                  td='CU Boulder'
+  br
+
+  table.table.text-center
+    tr
+      th Wins
+      th Losses
+
+    - if(cu_win_result && cu_lose_result)
+        for item1 in cu_win_result
+          for item2 in cu_lose_result
+            tr
+              td=item1.Win
+              td=item2.Lose
+
+
+include ../partials/footer.pug
